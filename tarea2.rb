@@ -22,10 +22,30 @@ hash.delete("\n")
 
 puts "Codigos: "+ hash.inspect
 
-temp = tiempos_camellos.split(",")
+temp = tiempos_camellos.split(", ")
+h = Hash.new{|hsh,key| hsh[key] = [] }
+
+primero = 0
+segundo = 1
+cantidad = temp.count
 temp.each do |t|
-	puts t
+
+	if segundo > cantidad
+
+		break
+	else 
+
+		h[temp[primero]].push temp[segundo]
+		puts temp[primero]
+		puts temp[segundo]
+		primero += 2
+		segundo += 2
+	end
 end
+
+puts h
+puts temp.count
+
 
 
 
