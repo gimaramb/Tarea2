@@ -1,3 +1,7 @@
+require_relative 'Carrera/Camello'
+
+
+#Se lee el archivo
 file = "carrera_2_camellos.txt"
 lines = []
 n = 0;
@@ -5,46 +9,64 @@ File.readlines(file).each do |line|
   lines << line;
 end
 
+#Cantidad de Camellos
 cantidad_camellos = lines[0] #cantidad camellos 
-puts "Cantidad de camellos: " + cantidad_camellos
-tiempos_camellos = lines[2]
-# puts tiempos_camellos
-# puts "--------------------"
 
-values = lines[1].split (";")
+
+#Código y Nombre Camellos
+camellos_aux = lines[1].to_s.delete(' ').to_s
+values = camellos_aux.split (";")
 codigos_camellos = []
-hash = {} #aqui estaran guardados los nombres y codigos de los camellos
+camellos = {} #aqui estaran guardados los nombres y codigos de los camellos
 values.each do |value|
 	codigos_camellos = value.split(",")
-	hash[codigos_camellos[0]] = codigos_camellos[1]
+	camellos[codigos_camellos[1]] = codigos_camellos[0]
 end
-hash.delete("\n")
+camellos.delete(nil)
 
-puts "Codigos: "+ hash.inspect
-
-temp = tiempos_camellos.split(", ")
-h = Hash.new{|hsh,key| hsh[key] = [] }
-
-primero = 0
-segundo = 1
+#Tiempos Camellos
+temp0 = lines[2].to_s.delete(' ').to_s
+temp = temp0.split(",")
+tiempos_hash = Hash.new{|hsh,key| hsh[key] = [] }
+aux = 0
 cantidad = temp.count
-temp.each do |t|
 
-	if segundo > cantidad
-
-		break
-	else 
-
-		h[temp[primero]].push temp[segundo]
-		puts temp[primero]
-		puts temp[segundo]
-		primero += 2
-		segundo += 2
+verdad = false
+total = 0
+temp.each do |distancia|
+	if verdad == false
+		verdad = true
+	else
+		total += distancia.to_i
+		verdad = false
 	end
 end
 
-puts h
-puts temp.count
+
+temp.each do |t|
+	if aux + 1 > cantidad
+		break
+	else 
+		tiempos_hash[temp[aux]].push temp[aux+1]
+		aux += 2
+	end
+end
+
+
+#Ahora creamos los camellos
+
+#Por cada camello
+tiempos_hash.each do |codigo, tiempos_array|
+	nuevo_camel = Carrera::Camello.build(camellos[codigo], codigo, tiempos_array)
+	#Ahora se envian los tiempos de cada caballo para procesar tiempos y vueltas
+	#Return un arreglo con el tiempo de cada caballo en cada vuelta
+
+	#El método de abajo arroja los tiempos de vuelta del camello en un arreglo
+	puts nuevo_camel.get_tiempos(tiempos_array).inspect
+
+
+end
+
 
 
 
