@@ -35,21 +35,21 @@ module Carrera
           #Si avanzo una vuelta, debemos calcular la velocidad del ultimo tramo 
           #Tenemos velocidad ultimo tramo, distancia a la meta -> tiempo que le tomo en el ultimo tramo
           velocidad = distancia.to_f
-          tramo_restante = recorrido.to_f - @largo_vuelta.to_f
+          tramo_restante = distancia.to_f - (recorrido.to_f - @largo_vuelta.to_f)
           #Ahora se calcula cuanto le tomo en el tramo final
           tiempo_restante = tramo_restante.to_f / velocidad.to_f
           tiempo_vuelta += tiempo_restante.to_f
           tiempos[vuelta - 1] = tiempo_vuelta
           #Ahora comienza la segunda vuelta adelante de la linea de meta (la diferencia). Tb reiniciamos variables
           vuelta +=1
-          recorrido = distancia.to_f - tramo_restante.to_f
+          recorrido = recorrido.to_f - @largo_vuelta.to_f
           tiempo_vuelta = 1 - tiempo_restante.to_f
         else
           tiempo_vuelta += 1
         end      
       end
       #Se retornan los tiempos para cada vuelta
-      #puts "Distancia Total : " + suma.to_s
+      puts @codigo + "  distancia Total : " + suma.to_s
       tiempos
     end
 

@@ -3,7 +3,7 @@ require_relative 'Carrera/Vuelta'
 
 
 #Se lee el archivo
-file = "carrera_4_camellos.txt"
+file = "carrera_6_camellos.txt"
 lines = []
 n = 0;
 File.readlines(file).each do |line|
@@ -40,6 +40,7 @@ cantidad_lineas.to_i.times do
 	aux += 1
 end
 temp.delete("\n")
+temp.delete("\t")
 temp.delete(" ")
 temp.delete(nil)
 temp.delete("")
@@ -55,8 +56,16 @@ temp.each do |t|
 	if aux + 1 > cantidad
 		break
 	else 
-		tiempos_hash[temp[aux]].push temp[aux+1]
-		aux += 2
+		code = temp[aux].delete("\t")
+		code = code.delete("\n")
+		code = code.delete(" ")
+		if camellos.has_key? code
+			#puts code
+			tiempos_hash[code].push temp[aux+1]
+			aux += 2
+		else
+			aux += 1
+		end
 	end
 end
 
@@ -73,7 +82,7 @@ tiempos_hash.each do |codigo, tiempos_array|
 	#Return un arreglo con el tiempo de cada caballo en cada vuelta
 	#arroja los tiempos de todas las vueltas de un camello en un arreglo
 	vueltas_todas[codigo] = nuevo_camel.get_tiempos(tiempos_array)
-	puts vueltas_todas[codigo].inspect
+	#puts vueltas_todas[codigo].inspect
 end
 
 #Ahora seteamos las vueltas, pasamos toda la informacion para cada instancia, la instancia procesa los datos
@@ -82,7 +91,7 @@ vueltas = []
 5.times do
 	v = Carrera::Vuelta.build(aux + 1)
 	vueltas[aux] = v
-	#puts v.set_resultado(vueltas_todas)
+	puts v.set_resultado(vueltas_todas)
 	aux+=1
 end
 

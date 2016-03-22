@@ -1,4 +1,4 @@
-#Vuelta debe contener un hash con el codigo del caballo y su tiempo de vuelta
+#Vuelta debe contener un hash con el codigo del caballo y sus tiempos de vueltas[resultados]
 #Ademas, debe contener otro Hash con los puntajes asigados: {codigo_caballo -> puntaje}
 module Carrera
   class Vuelta
