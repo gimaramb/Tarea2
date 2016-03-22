@@ -49,7 +49,7 @@ module Carrera
         end      
       end
       #Se retornan los tiempos para cada vuelta
-      puts "Distancia Total : " + suma.to_s
+      #puts "Distancia Total : " + suma.to_s
       tiempos
     end
 

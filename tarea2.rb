@@ -1,8 +1,9 @@
 require_relative 'Carrera/Camello'
+require_relative 'Carrera/Vuelta'
 
 
 #Se lee el archivo
-file = "carrera_2_camellos.txt"
+file = "carrera_4_camellos.txt"
 lines = []
 n = 0;
 File.readlines(file).each do |line|
@@ -11,6 +12,7 @@ end
 
 #Cantidad de Camellos
 cantidad_camellos = lines[0] #cantidad camellos 
+
 
 
 #Código y Nombre Camellos
@@ -24,25 +26,31 @@ values.each do |value|
 end
 camellos.delete(nil)
 
+
 #Tiempos Camellos
-temp0 = lines[2].to_s.delete(' ').to_s
-temp = temp0.split(",")
+cantidad_lineas = lines.count - 2
+aux = 2
+temp = []
+#puts lines[2]
+cantidad_lineas.to_i.times do
+	linea = lines[aux].to_s.delete(' ').to_s
+	linea = linea.to_s.delete('\n').to_s
+	new_array = linea.split(",")
+	temp.concat(new_array)
+	aux += 1
+end
+temp.delete("\n")
+temp.delete(" ")
+temp.delete(nil)
+temp.delete("")
+#puts temp.inspect
+
+
+
+#Ahora para cada Codigo de camello le asociamos todas las distancias recorrida en un segundo en el hash
 tiempos_hash = Hash.new{|hsh,key| hsh[key] = [] }
 aux = 0
 cantidad = temp.count
-
-verdad = false
-total = 0
-temp.each do |distancia|
-	if verdad == false
-		verdad = true
-	else
-		total += distancia.to_i
-		verdad = false
-	end
-end
-
-
 temp.each do |t|
 	if aux + 1 > cantidad
 		break
@@ -52,19 +60,30 @@ temp.each do |t|
 	end
 end
 
+#puts tiempos_hash.inspect
+
 
 #Ahora creamos los camellos
 
+vueltas_todas = Hash.new{|hsh,key| hsh[key] = [] }
 #Por cada camello
 tiempos_hash.each do |codigo, tiempos_array|
 	nuevo_camel = Carrera::Camello.build(camellos[codigo], codigo, tiempos_array)
 	#Ahora se envian los tiempos de cada caballo para procesar tiempos y vueltas
 	#Return un arreglo con el tiempo de cada caballo en cada vuelta
+	#arroja los tiempos de todas las vueltas de un camello en un arreglo
+	vueltas_todas[codigo] = nuevo_camel.get_tiempos(tiempos_array)
+	puts vueltas_todas[codigo].inspect
+end
 
-	#El método de abajo arroja los tiempos de vuelta del camello en un arreglo
-	puts nuevo_camel.get_tiempos(tiempos_array).inspect
-
-
+#Ahora seteamos las vueltas, pasamos toda la informacion para cada instancia, la instancia procesa los datos
+aux = 0
+vueltas = []
+5.times do
+	v = Carrera::Vuelta.build(aux + 1)
+	vueltas[aux] = v
+	#puts v.set_resultado(vueltas_todas)
+	aux+=1
 end
 
 
