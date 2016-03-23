@@ -1,9 +1,10 @@
 require_relative 'Carrera/Camello'
 require_relative 'Carrera/Vuelta'
+require_relative 'Carrera/Carrera'
 
 
 #Se lee el archivo
-file = "carrera_6_camellos.txt"
+file = ARGV[0]
 lines = []
 n = 0;
 File.readlines(file).each do |line|
@@ -71,19 +72,23 @@ end
 
 #puts tiempos_hash.inspect
 
-
 #Ahora creamos los camellos
 
 vueltas_todas = Hash.new{|hsh,key| hsh[key] = [] }
+camellos_totales = []
+temp = 0
 #Por cada camello
 tiempos_hash.each do |codigo, tiempos_array|
 	nuevo_camel = Carrera::Camello.build(camellos[codigo], codigo, tiempos_array)
-	#Ahora se envian los tiempos de cada caballo para procesar tiempos y vueltas
+	#Ahora se envian los tiempos de cada camello para procesar tiempos y vueltas
 	#Return un arreglo con el tiempo de cada caballo en cada vuelta
 	#arroja los tiempos de todas las vueltas de un camello en un arreglo
 	vueltas_todas[codigo] = nuevo_camel.get_tiempos(tiempos_array)
+	camellos_totales[temp] = nuevo_camel
+	temp+=1
 	#puts vueltas_todas[codigo].inspect
 end
+
 
 #Ahora seteamos las vueltas, pasamos toda la informacion para cada instancia, la instancia procesa los datos
 aux = 0
@@ -91,10 +96,15 @@ vueltas = []
 5.times do
 	v = Carrera::Vuelta.build(aux + 1)
 	vueltas[aux] = v
-	puts v.set_resultado(vueltas_todas)
+	#Esto me retorna standing (@resultado), que es un arreglo con los metros recorridos por vuelta por cada camello
+	v.set_resultado(vueltas_todas)
+	puts "------------------"
 	aux+=1
 end
 
+#Creamos una nueva carrera
+nueva_carrera = Carrera::Carrera.build(camellos_totales,vueltas)
+nueva_carrera.procesar_puntaje(camellos_totales, vueltas)
 
 
 

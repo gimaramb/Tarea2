@@ -1,7 +1,7 @@
 module Carrera
   class Camello
 
-    attr_accessor :nombre, :codigo
+    attr_accessor :nombre, :codigo, :puntaje
     largo_vuelta = 3210/5
 
     def self.build(nombre, codigo, tiempos = [])
@@ -12,6 +12,7 @@ module Carrera
     def initialize(nombre, codigo)
       @nombre = nombre
       @codigo = codigo
+      @puntaje = 0
     end
 
     def get_tiempos(tiempos = [])
@@ -52,6 +53,12 @@ module Carrera
       puts @codigo + "  distancia Total : " + suma.to_s
       tiempos
     end
+
+    def set_puntaje(puntaje)
+        @puntaje += puntaje
+    end
+
+
 
 
   end

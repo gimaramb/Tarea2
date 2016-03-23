@@ -21,6 +21,8 @@ module Carrera
       standings = Hash.new{|hsh,key| hsh[key] = float }
       resultado.each do |codigo, tiempos_array|
         standings[codigo] = tiempos_array[@num_vuelta.to_i - 1]
+        #En standings[codigo] tenemos los valores del tiempo que le tomo a cada camello completar una vuelta.
+        standings[codigo]
       end
       @resultados = standings
     end
