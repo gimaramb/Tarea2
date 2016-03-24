@@ -78,6 +78,7 @@ vueltas_todas = Hash.new{|hsh,key| hsh[key] = [] }
 camellos_totales = []
 temp = 0
 #Por cada camello
+puts "-------------Distancias Totales-------------"
 tiempos_hash.each do |codigo, tiempos_array|
 	nuevo_camel = Carrera::Camello.build(camellos[codigo], codigo, tiempos_array)
 	#Ahora se envian los tiempos de cada camello para procesar tiempos y vueltas
@@ -98,13 +99,15 @@ vueltas = []
 	vueltas[aux] = v
 	#Esto me retorna standing (@resultado), que es un arreglo con los metros recorridos por vuelta por cada camello
 	v.set_resultado(vueltas_todas)
-	puts "------------------"
+	#puts "------------------"
 	aux+=1
 end
 
 #Creamos una nueva carrera
 nueva_carrera = Carrera::Carrera.build(camellos_totales,vueltas)
+puts "-------------Vueltas-------------"
 nueva_carrera.procesar_puntaje(camellos_totales, vueltas)
+
 
 
 

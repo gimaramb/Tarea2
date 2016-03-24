@@ -23,6 +23,7 @@ module Carrera
  
     def procesar_tiempos(tiempos_datos = [])
       #tiempos es un arreglo con los metros avanzados en cada segundo por el camello
+
       recorrido = 0
       tiempos = []
       tiempo_vuelta = 0
@@ -39,19 +40,19 @@ module Carrera
           velocidad = distancia.to_f
           tramo_restante = distancia.to_f - (recorrido.to_f - @largo_vuelta.to_f)
           #Ahora se calcula cuanto le tomo en el tramo final
-          tiempo_restante = tramo_restante.to_f / velocidad.to_f
-          tiempo_vuelta += tiempo_restante.to_f
+          tiempo_restante = tramo_restante.to_i / velocidad.to_i
+          tiempo_vuelta += tiempo_restante.to_i
           tiempos[vuelta - 1] = tiempo_vuelta
           #Ahora comienza la segunda vuelta adelante de la linea de meta (la diferencia). Tb reiniciamos variables
           vuelta +=1
-          recorrido = recorrido.to_f - @largo_vuelta.to_f
-          tiempo_vuelta = 1 - tiempo_restante.to_f
+          recorrido = recorrido.to_i - @largo_vuelta.to_i
+          tiempo_vuelta = 1 - tiempo_restante.to_i
         else
           tiempo_vuelta += 1
         end      
       end
       #Se retornan los tiempos para cada vuelta
-      puts @codigo + "  distancia Total : " + suma.to_s
+      puts @nombre + ": " + suma.to_s
       tiempos
     end
 
